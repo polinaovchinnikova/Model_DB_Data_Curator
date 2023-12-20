@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroGPU Example</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/primer/16.0.2/build.css">
+    <style>
+        /* Add additional custom styles here */
+        body {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1>NeuroGPU Example</h1>
+        <p>Welcome to the NeuroGPU Example page.</p>
+    </header>
+
+    <!-- Files Section -->
+    <section id="files" class="section">
+        <h2>Files</h2>
+        <div class="files-content">
+            <!-- README Content -->
+            <div class="readme-content" id="readme-content"></div>
+
+            <!-- Preview and Raw Buttons -->
+            <div class="preview-raw-buttons">
+                <button class="tab-link" onclick="showPreview()">Preview</button>
+                <button class="tab-link" onclick="showRaw()">Raw</button>
+            </div>
+
+            <!-- Preview and Raw Areas -->
+            <div class="preview-raw">
+                <div class="preview hidden" id="markdown-preview"></div>
+                <pre class="raw hidden" id="markdown-raw"></pre>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.1.0/markdown-it.min.js"></script>
+    <script>
+        const md = window.markdownit();
+
+        // Function to fetch and display the README content
+        function loadReadme() {
+            fetch('README.md')
+                .then(response => response.text())
+                .then(markdownText => {
+                    document.getElementById('readme-content').innerHTML = md.render(markdownText);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Function to show the Preview area
+        function showPreview() {
+            document.getElementById('markdown-preview').innerHTML = md.render(document.getElementById('readme-content').textContent);
+            document.getElementById('markdown-preview').classList.remove('hidden');
+            document.getElementById('markdown-raw').classList.add('hidden');
+        }
+
+        // Function to show the Raw area
+        function showRaw() {
+            document.getElementById('markdown-raw').textContent = document.getElementById('readme-content').textContent;
+            document.getElementById('markdown-raw').classList.remove('hidden');
+            document.getElementById('markdown-preview').classList.add('hidden');
+        }
+
+        // Load the README content on page load
+        window.addEventListener('load', loadReadme);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

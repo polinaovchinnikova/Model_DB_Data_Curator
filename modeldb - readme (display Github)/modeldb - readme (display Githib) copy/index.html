@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Markdown Viewer</title>
+    <style>
+        .container {
+            margin: 20px;
+        }
+
+        .tab-buttons {
+            margin-top: 10px;
+        }
+
+        .tab-link {
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div>
+                <p>
+                    This shows an example use case of building NeuroGPU simulation around a model pyramidal cell from the BBP portal. While the simulation can be run without python, we show how to update the parameters and run the simulation in python.
+                </p>
+            </div>
+
+            <div class="tab-buttons">
+                <span class="tab-link active" onclick="showPreview()">Preview</span>
+                <span class="tab-link" onclick="showRaw()">Raw</span>
+            </div>
+
+            <div id="markdown-preview" class="raw-content"></div>
+            <pre id="markdown-raw" class="raw-content hidden"></pre>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@10.0.0/dist/markdown-it.min.js"></script>
+<script>
+    const md = window.markdownit();
+
+    function loadReadme() {
+        fetch('README.md')
+            .then(response => response.text())
+            .then(markdownText => {
+                document.getElementById('markdown-preview').innerHTML = md.render(markdownText);
+                document.getElementById('markdown-raw').textContent = markdownText;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function showPreview() {
+        document.querySelector('.tab-link.active').classList.remove('active');
+        document.querySelector('.tab-buttons .tab-link:nth-child(1)').classList.add('active');
+        document.getElementById('markdown-preview').classList.remove('hidden');
+        document.getElementById('markdown-raw').classList.add('hidden');
+    }
+
+    function showRaw() {
+        document.querySelector('.tab-link.active').classList.remove('active');
+        document.querySelector('.tab-buttons .tab-link:nth-child(2)').classList.add('active');
+        document.getElementById('markdown-raw').classList.remove('hidden');
+        document.getElementById('markdown-preview').classList.add('hidden');
+    }
+
+    window.addEventListener('load', loadReadme);
+</script>
+</body>
+</html>
+
+

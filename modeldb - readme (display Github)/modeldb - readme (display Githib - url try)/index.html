@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Viewer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/primer/16.0.2/build.css">
+    <style>
+        /* Add CSS styles here */
+        body {
+            margin: 20px;
+        }
+
+        /* Centered content window */
+        .centered-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style the Raw content to fit within the window */
+        .raw-content {
+            overflow-x: auto; /* Enable horizontal scrolling */
+            max-width: 100%; /* Make the content responsive */
+            white-space: pre-wrap; /* Allow text to wrap within the pre element */
+        }
+
+        /* Hide the Raw and Preview areas by default */
+        .raw-content.hidden, .preview.hidden {
+            display: none;
+        }
+
+        /* Style for Raw and Preview buttons */
+        .tab-link {
+            cursor: pointer;
+        }
+
+        .tab-link.active {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1>Markdown Viewer</h1>
+        <p>Welcome to the Markdown Viewer page.</p>
+    </header>
+
+    <!-- Files Title (outside of window) -->
+    <h2>Files</h2>
+
+    <!-- Centered Content Window -->
+    <div class="centered-content">
+        <!-- Files Section -->
+        <section id="files" class="section">
+            <div class="files-content">
+                <!-- Raw and Preview Buttons -->
+                <div class="tab-buttons">
+                    <button class="tab-link active" onclick="showPreview()">Preview</button>
+                    <button class="tab-link" onclick="showRaw()">Raw</button>
+                </div>
+
+                <!-- Preview Area -->
+                <div class="preview" id="markdown-preview"></div>
+
+                <!-- Raw Area -->
+                <pre class="raw-content hidden" id="markdown-raw"></pre>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.1.0/markdown-it.min.js"></script>
+    <script>
+        const md = window.markdownit();
+
+        // Function to fetch and display the Markdown content
+        function loadMarkdown() {
+            fetch('README.html') // Updated to load README.html
+                .then(response => response.text())
+                .then(markdownText => {
+                    document.getElementById('markdown-preview').innerHTML = md.render(markdownText);
+                    document.getElementById('markdown-raw').textContent = markdownText;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Function to show the Preview area and hide Raw
+        function showPreview() {
+            document.querySelector('.tab-link.active').classList.remove('active');
+            document.querySelector('.tab-buttons .tab-link:nth-child(1)').classList.add('active');
+            document.getElementById('markdown-preview').classList.remove('hidden');
+            document.getElementById('markdown-raw').classList.add('hidden');
+        }
+
+        // Function to show the Raw area and hide Preview
+        function showRaw() {
+            document.querySelector('.tab-link.active').classList.remove('active');
+            document.querySelector('.tab-buttons .tab-link:nth-child(2)').classList.add('active');
+            document.getElementById('markdown-raw').classList.remove('hidden');
+            document.getElementById('markdown-preview').classList.add('hidden');
+        }
+
+        // Load the Markdown content on page load
+        window.addEventListener('load', loadMarkdown);
+    </script>
+</body>
+</html>
+
+
